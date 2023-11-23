@@ -2,13 +2,38 @@ def integracion(f: Double => Double, a: Double, b: Double): Double = { //Se crea
   val Simpson = (b-a)*(f(a)+4*f((a+b)/2)+f(b))/6
   Simpson
 }
-def f(x: Double): Double = -x*x+8*x-12//Se define la funcion a integrar
+
+def f0(x: Double): Double = -x*x+8*x-12//Se define la funcion a integrar
 val a = 3// Límite inferior
 val b = 5// Límite superior
+def f1(x: Double): Double = 3*x*x
+val a1 = 0
+val b1 = 2
+def f2(x: Double): Double = x+2*x*x-x*x*x+5*x*x*x*x
+val a2 = -1
+val b2 = 1
+def f3(x: Double): Double = (2*x+1)/(x*x+x)
+val a3 = 1
+val b3 = 2
+def f4(x: Double): Double = math.exp(x)
+val a4 = 0
+val b4 = 1
+def f5(x: Double): Double = 1/math.sqrt(x-1)
+val a5 = 2
+val b5 = 3
+def f6(x: Double): Double = 1/1+x*x
+val a6 = 0
+val b6 = 1
+
+val resultadoAprox0 = integracion(f0, a, b)//Se obtiene el resultado del metodo Simpson
+val resultadoAprox1 = integracion(f1, a1, b1)
+val resultadoAprox2 = integracion(f2, a2, b2)
+val resultadoAprox3 = integracion(f3, a3, b3)
+val resultadoAprox4 = integracion(f4, a4, b4)
+val resultadoAprox5 = integracion(f5, a5, b5)
+val resultadoAprox6 = integracion(f6, a6, b6)
+
 val m = 10000000//Número de subdivisiones trapecio
-
-val resultadoAprox = integracion(f, a, b)//Se obtiene el resultado del metodo Simpson
-
 //Utilizaremos la regla del trapecio para la integral exacta
 def integralExacta(a: Double, b: Double, m: Int, f: Double => Double): Double = {
 
@@ -19,10 +44,22 @@ def integralExacta(a: Double, b: Double, m: Int, f: Double => Double): Double = 
   (h / 2) * (f(a) + 2 * sumatoria + f(b))//Aplica el metodo del trapecio
 }
 
-val resultadoExacta = integralExacta(a, b, m, f)//Calculo de la integral exacta
+val resultadoExacta0 = integralExacta(a, b, m, f0)//Calculo de la integral exacta
+val resultadoExacta1 = integralExacta(a1, b1, m, f1)
+val resultadoExacta2 = integralExacta(a2, b2, m, f2)
+val resultadoExacta3 = integralExacta(a3, b3, m, f3)
+val resultadoExacta4 = integralExacta(a4, b4, m, f4)
+val resultadoExacta5 = integralExacta(a5, b5, m, f5)
+val resultadoExacta6 = integralExacta(a6, b6, m, f6)
 
 def Error(resultE: Double, resultA: Double): Double = {//Funcion para calcular el error
   val error = resultE - resultA
   error
 }
-val error = Error(resultadoExacta,resultadoAprox).abs
+val error0 = Error(resultadoExacta0,resultadoAprox0).abs
+val error1 = Error(resultadoExacta1,resultadoAprox1).abs
+val error2 = Error(resultadoExacta2,resultadoAprox2).abs
+val error3 = Error(resultadoExacta3,resultadoAprox3).abs
+val error4 = Error(resultadoExacta4,resultadoAprox4).abs
+val error5 = Error(resultadoExacta5,resultadoAprox5).abs
+val error6 = Error(resultadoExacta6,resultadoAprox6).abs
