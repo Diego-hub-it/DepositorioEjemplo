@@ -1,0 +1,44 @@
+def integracion(f: Double => Double, a: Double, b: Double, n: Int): Double = { //Se crea la funcion integracion
+  require(n % 2 == 0) //Verifica si n es par
+
+  val h = (b - a) / n //Calcula el tamaño de cada subdivision
+
+  def sumatoria(i: Int, acc: Double): Double = { //Se crea la funcion sumatoria
+    if (i >= n) acc //Devuelve el valor acumulado acc
+    else {
+      val xi = a + i * h //Utilizando la regla del trapecio
+      val fi = f(xi) //Evalua la funcion para obtener el valor
+
+      val factor = if (i == 0 || i == n) 1 else if (i % 2 == 1) 4 else 2 //Determina el factor de multiplicacion que se aplicara al valor f(xi)
+      val newAcc = acc + factor * fi //Calcula el nuevo valor acumulado
+      sumatoria(i + 1, newAcc) //Llama la funcion sumatoria recursivamente
+    }
+  }
+  val resultado = (h / 3) * sumatoria(0, 0)//Se aplica la formula del metodo Simpson
+  resultado
+}
+def f(x: Double): Double = -x*x+8*x-12//Se define la funcion a integrar
+val a = 3// Límite inferior
+val b = 5// Límite superior
+val n = 1000// Número de subdivisiones simpson
+val m = 10000000//Número de subdivisiones trapecio
+
+val resultadoAprox = integracion(f, a, b, n)//Se obtiene el resultado del metodo Simpson
+
+//Utilizaremos la regla del trapecio para la integral exacta
+def integralExacta(a: Double, b: Double, n: Int, f: Double => Double): Double = {
+
+  val h = (b - a) / m.toDouble//Calcula el tamalño de cada segmento
+
+  val sumatoria = (1 until m).map(i => f(a + i * h)).sum
+
+  (h / 2) * (f(a) + 2 * sumatoria + f(b))//Aplica el metodo del trapecio
+}
+
+val resultadoExacta = integralExacta(a, b, m, f)//Calculo de la integral exacta
+
+def Error(resultE: Double, resultA: Double): Double = {//Funcion para calcular el error
+  val error = resultE - resultA
+  error
+}
+val error = Error(resultadoExacta,resultadoAprox)
