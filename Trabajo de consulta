@@ -1,32 +1,16 @@
-def integracion(f: Double => Double, a: Double, b: Double, n: Int): Double = { //Se crea la funcion integracion
-  require(n % 2 == 0) //Verifica si n es par
-
-  val h = (b - a) / n //Calcula el tamaño de cada subdivision
-
-  def sumatoria(i: Int, acc: Double): Double = { //Se crea la funcion sumatoria
-    if (i >= n) acc //Devuelve el valor acumulado acc
-    else {
-      val xi = a + i * h //Utilizando la regla del trapecio
-      val fi = f(xi) //Evalua la funcion para obtener el valor
-
-      val factor = if (i == 0 || i == n) 1 else if (i % 2 == 1) 4 else 2 //Determina el factor de multiplicacion que se aplicara al valor f(xi)
-      val newAcc = acc + factor * fi //Calcula el nuevo valor acumulado
-      sumatoria(i + 1, newAcc) //Llama la funcion sumatoria recursivamente
-    }
-  }
-  val resultado = (h / 3) * sumatoria(0, 0)//Se aplica la formula del metodo Simpson
-  resultado
+def integracion(f: Double => Double, a: Double, b: Double): Double = { //Se crea la funcion integracion
+  val Simpson = (b-a)*(f(a)+4*f((a+b)/2)+f(b))/6
+  Simpson
 }
 def f(x: Double): Double = -x*x+8*x-12//Se define la funcion a integrar
 val a = 3// Límite inferior
 val b = 5// Límite superior
-val n = 1000// Número de subdivisiones simpson
 val m = 10000000//Número de subdivisiones trapecio
 
-val resultadoAprox = integracion(f, a, b, n)//Se obtiene el resultado del metodo Simpson
+val resultadoAprox = integracion(f, a, b)//Se obtiene el resultado del metodo Simpson
 
 //Utilizaremos la regla del trapecio para la integral exacta
-def integralExacta(a: Double, b: Double, n: Int, f: Double => Double): Double = {
+def integralExacta(a: Double, b: Double, m: Int, f: Double => Double): Double = {
 
   val h = (b - a) / m.toDouble//Calcula el tamalño de cada segmento
 
@@ -41,4 +25,4 @@ def Error(resultE: Double, resultA: Double): Double = {//Funcion para calcular e
   val error = resultE - resultA
   error
 }
-val error = Error(resultadoExacta,resultadoAprox)
+val error = Error(resultadoExacta,resultadoAprox).abs
